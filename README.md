@@ -35,7 +35,7 @@ rails server
 
 (事实上，这个目标也是我从脑洞中提取出来的:joy: 真实目标请参看英文原文)
 
-###步骤
+### 步骤
 
 首先，在项目的根目录下执行命令：
 
@@ -80,3 +80,21 @@ Rails的一大特点是开发速度快，不论是rails自身还是跟它集成�
 | PUT | /ideas/:id | update |
 | DELETE | /ideas/:id | delete |
 
+## 第三步
+### 目标
+爱美是每个女孩儿的天性，那么你肯定无法容忍现在这么丑的页面，这一步我们就是要对网页的样式做些改变，让页面变得美美哒~
+
+### 步骤
+基本都是复制粘贴，所以直接参看教程吧：<http://guides.railsgirls.com/app/#design>
+
+### 说明
+HTML与CSS的关系，就像语法中的“主谓宾”和“定状补”的关系一样。
+
+HTML是主谓宾，它自己就可以表达出完整的意思，但是并不生动。i.e. HTML可以组成完整的页面，但是并不美观。
+
+CSS是定状补，它单独存在时并没有什么卵用，但是如果跟主谓宾(HTML)结合起来使用的话，就会让页面变得生动起来。
+
+### 参考资料
+* 这一步用到了[bootstrap](http://www.bootcss.com/)，推荐一个快速学习其布局的站点[Layout It](http://www.layoutit.com/)
+* [W3School](http://www.w3school.com.cn/html/html_intro.asp)上可以查到很多HTML/CSS的详细说明，且大多配有相应的例子
+* [三周三页面](http://juntao.gitbooks.io/3-web-designs-in-3-weeks/)也是快速学习HTML/CSS的一个有效途径（给邱大师打了个广告:smile:）
