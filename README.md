@@ -98,3 +98,52 @@ CSS是定状补，它单独存在时并没有什么卵用，但是如果跟主�
 * 这一步用到了[bootstrap](http://www.bootcss.com/)，推荐一个快速学习其布局的站点[Layout It](http://www.layoutit.com/)
 * [W3School](http://www.w3school.com.cn/html/html_intro.asp)上可以查到很多HTML/CSS的详细说明，且大多配有相应的例子
 * [三周三页面](http://juntao.gitbooks.io/3-web-designs-in-3-weeks/)也是快速学习HTML/CSS的一个有效途径（给邱大师打了个广告:smile:）
+
+
+## 第四步
+### 目标
+丰富表单，增加图片上传功能，同时将已上传的图片显示在展示页面上。
+
+### 步骤
+还记得第二步中提到的便捷实现吗？既然图片上传也是常用功能之一，那自然也有相应的快(tōu)捷(lǎn)方法啦。
+
+1.在Gemfile中为项目添加一个新的Gem：
+
+```
+gem 'carrierwave'
+```
+2.用命令`bundle install`下载并安装这个新添加的Gem
+
+3.装是装好了，但是怎么用呢？这时候轮到[RubyGems](https://rubygems.org/gems/carrierwave)出场了。里面不但可以看到这个Gem的下载人数和历史版本，还能找到一系列的相关链接，其中就包括了[使用说明](http://www.rubydoc.info/gems/carrierwave/0.10.0)。
+
+4.按照说明的提示，现在我们该使用`generate`来创建uploader了。在命令行里键入`rails g uploader picture`
+
+> 这里的`g`是`generate`的缩写，同样的，`rails server`也可以简写成`rails s`
+
+> 还有一个常用工具`rails console`，也可以简写成`rails c`
+
+5.接下来就要把刚创建的uploader和Idea对象中的picutre属性绑定起来啦。在文件`app/models/idea.rb`中添加如下语句：
+
+```
+mount_uploader :picture, PictureUploader
+```
+
+6.将`app/views/ideas/_form.html.erb`文件中picture字段的属性改为文件：
+
+```
+<%= f.file_field :picture %>
+```
+到这里，文件上传功能就实现好了，如果启动server创建一个新Idea的话，就会发现上传的文件已经存储到PictureUploader配置的路径下了。但光传上去不行啊，我们还需要能直接在页面上看到，所以还需要最后一步：
+
+7.打开文件`app/views/ideas/show.html.erb`与`index.html.erb`，将
+
+```
+<%= @idea.picture %>
+```
+更改为
+
+```
+<%= image_tag(@idea.picture.url, :size => "350x350") if @idea.picture.present? %>
+```
+
+好啦，第四步到此结束。现在我们的站点既能上传图片又能将它们显示在index与show这两个页面上了。
