@@ -54,6 +54,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.25.1)
+    mini_magick (4.3.3)
     minitest (4.7.5)
     multi_json (1.11.2)
     polyglot (0.3.5)
@@ -116,6 +117,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   jbuilder (~> 1.2)
   jquery-rails
+  mini_magick
   rails (= 4.0.0)
   sass-rails (~> 4.0.0)
   sdoc

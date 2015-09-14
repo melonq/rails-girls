@@ -150,7 +150,7 @@ mount_uploader :picture, PictureUploader
 
 
 ## 第五步
-### 了解route相关知识
+### 目标：了解route相关知识
 通过`rails server`可以访问两类文件：
 
 * 一是直接放置在public目录下的静态文件。比如自动生成的404/500等页面，直接通过`/400.html`即可访问。
@@ -168,3 +168,42 @@ root to: redirect('/ideas')
 ```
 
 更多的说明请参考RoR的[手册](http://guides.rubyonrails.org/routing.html)。
+
+## 第六步
+### 目标：缩放图片
+我们在第四步完成了图片的上传功能，目前的情况是，用户上传多大尺寸的图片，我们就存储多大的图片在服务器上。
+
+但实际上不同的页面需要的图片尺寸是不同的，比如index和show这两个页面，需要的图片尺寸就分别是`50x50`与`350x350`。而且，有些用户可能会上传尺寸非常大的高清无码大图，如果每次都是先加载原图，再通过css对它进行缩放的话，会对网页的加载速度产生较大的影响。
+
+所以，对上传的图片在使用前进行自定义缩放是很有必要的。具体怎么做呢？对，你猜得没错，先通过搜索找个快(tōu)捷(lǎn)的方法吧
+
+### 步骤
+1.通过搜索，很容易就能找到两个与carrierwave相配套的组件：MiniMagick与RMagick
+
+2.比较了一下两个Gem的说明，相差不是很多，MiniMagick比较轻量一些，但RMagick的下载量较大。再看看carrierwave的文档，发现它比较推荐用MiniMagick，而且介绍RMagick的地方连个链接都没给，一看就是后妈生的:stuck_out_tongue:果断选推荐的MiniMagick。
+
+3.Gem找好了，把它加进Gemfile并运行`bundle install`吧：
+
+```
+gem "mini_magick"
+```
+
+4.根据文档，在Uploader中对MiniMagick进行配置：打开`picuture_uploader.rb`，插入以下几行：（部分代码已经在上面的步骤自动生成了，只需将它们从注释状态恢复即可）
+
+```
+include CarrierWave::MiniMagick
+
+version :another_size do
+  process :resize_to_fit => [250, 250]
+end
+```
+
+这里我们将上传的图片缩放成`50x50`的尺寸，用以显示在index页面。
+
+现在启动server后，就能在/uploads目录下找到缩放后的图片文件了，如果要将它显示在index页面上，只需要在`index.html.erb`中将引用的地方改为：
+
+```
+image_tag(idea.picture.thumb.url, :size => "50x50")
+```
+
+注：如果在上传图片的时候被提示需要“ImageMagick/GraphicsMagick”，请自行通过[官网](http://imagemagick.org/script/binary-releases.php)下载安装。
