@@ -53,7 +53,7 @@ rails generate scaffold idea name:string description:text picture:string
 
 第一步中的rails new还好说，毕竟很多语言建立工程项目时都有类似的便捷方式。但这个译作`脚手架`的东东，怎么一行命令就把router、controller、view、model & migration的代码全写好了，甚至连测试都补全了，它这么棒还要我们干嘛。。
 
-事实上呢，个人认为scaffold并没有太大的用途，它更适合让初学者来熟悉rails创建和使用对象的基本流程，而一旦掌握了这部分内容，scaffold创建的一堆冗余文件反而会有点过犹不及的感觉。倒是generate这个命令会更常用一些，它可以根据模板快速创建指定的基本文件，能节省很多时间。
+事实上呢，个人认为scaffold并没有太大的用途，它更适合让初学者来熟悉rails创建和使用对象的基本流程，而一旦掌握了这部分内容，scaffold创建的一堆冗余文件反而会有点过犹不及的感觉。倒是generate其它东西命令会更常用一些，它可以根据模板快速创建指定的基本文件，能节省很多时间。
 
 另一个值得一提的是路由的配置，打开`config/routes.rb`文件，可以看到真正起作用的只有一行代码`resources :ideas`，但是它的存在却让我们可以同时访问四个页面，让Server识别7种请求，这是怎么做到的呢？
 
@@ -147,3 +147,24 @@ mount_uploader :picture, PictureUploader
 ```
 
 好啦，第四步到此结束。现在我们的站点既能上传图片又能将它们显示在index与show这两个页面上了。
+
+
+## 第五步
+### 了解route相关知识
+通过`rails server`可以访问两类文件：
+
+* 一是直接放置在public目录下的静态文件。比如自动生成的404/500等页面，直接通过`/400.html`即可访问。
+* 二是经过 route->controller->view 这样一个流程，最终返回的页面。前面看到的`/ideas`页面就属于这类。
+
+要想知道router都可以处理哪些请求，可以通过命令`rake routes`来查看。通过修改`config/route.rb`文件，也可以自定义请求与controller之间的映射关系。
+
+例如，若想把ideas的index页面作为首页，则可以添加如下路由规则：
+```
+root to: 'ideas#index'
+```
+当然，也可以通过把首页重定向到'/ideas'来实现同样的功能：
+```
+root to: redirect('/ideas')
+```
+
+更多的说明请参考RoR的[手册](http://guides.rubyonrails.org/routing.html)。
